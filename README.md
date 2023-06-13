@@ -6,12 +6,16 @@ from Neil Cummings . coures link : https://www.udemy.com/course/complete-guide-t
 in backend api using:
 
 .net 7
+
 clean architecture
+
 CQRS + Mediator pattern 
 
 
 in frontend using:
 
 react + typescript
+
 axios
+
 react.semantic-ui
