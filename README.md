@@ -27,3 +27,5 @@ react.semantic-ui
 Mobx as State Management and MobxReactLite to use of observers in Mobx
 
 React-Router
+
+react-toastify
