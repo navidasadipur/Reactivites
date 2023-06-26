@@ -30,4 +30,4 @@ React-Router
 
 react-toastify
 
-formik library
+formik and react-datepicker for forms
