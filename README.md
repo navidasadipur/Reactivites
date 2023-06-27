@@ -11,8 +11,9 @@ in backend api using:
 
 clean architecture
 
-CQRS + Mediator pattern 
+CQRS + Mediator pattern
 
+ASPNET Core Identity(JWT type)
 
 
 
@@ -30,4 +31,4 @@ React-Router
 
 react-toastify
 
-formik and react-datepicker for forms
+formik and react-datepicker and validation using Yup for forms
