@@ -13,6 +13,14 @@ const sleep = (delay: number) => {
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
+const responseBody = <T>(response: AxiosResponse<T>) => response.data;
+
+axios.interceptors.request.use(config => {
+    const token = store.commonStore.token;
+    if (token && config.headers) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+})
+
 axios.interceptors.response.use(async (response) => {
     if (process.env.NODE_ENV === "development") await sleep(1000);
         
@@ -53,8 +61,6 @@ axios.interceptors.response.use(async (response) => {
     }
     return Promise.reject(error);
 });
-
-const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
     get: <T>(url: string) => axios.get<T>(url).then(responseBody),
