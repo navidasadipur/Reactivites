@@ -15,6 +15,7 @@ in backend api using:
 <li>clean architecture</li>
 <li>CQRS + Mediator pattern</li>
 <li>ASPNET Core Identity(JWT type)</li>
+<li>AutoMapper</li>
 </ul>
 
 in frontend using:
