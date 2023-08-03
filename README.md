@@ -14,7 +14,8 @@ in backend api using:
 <li>.net 7</li>
 <li>clean architecture</li>
 <li>CQRS + Mediator pattern</li>
-<li>ASPNET Core Identity(JWT type)</li>
+<li>SignalR</li>
+<li>ASPNET Core Identity</li>
 <li>AutoMapper</li>
 </ul>
 
