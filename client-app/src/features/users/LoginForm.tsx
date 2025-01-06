@@ -4,11 +4,16 @@ import { Button, Header, Label } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
 
-export default observer(function LoginForm() {
+interface Props {
+    prefilledEmail?: string;
+    prefilledPassword?: string;
+}
+
+export default observer(function LoginForm({ prefilledEmail = '', prefilledPassword = ''} : Props) {
     const {userStore} = useStore();
     return (
         <Formik
-            initialValues={{email: '', password: '', error: null}}
+            initialValues={{email: prefilledEmail, password: prefilledPassword, error: null}}
             onSubmit={(values, {setErrors}) => userStore.login(values).catch(error => 
                 setErrors({error: 'Invalid email or password'}))}
         >

@@ -29,8 +29,16 @@ export default observer(function HomePage() {
                         <Button onClick={() => modalStore.openModal(<RegisterForm />)} size='huge' inverted>
                             Register!
                         </Button>
+                        <Button onClick={() => modalStore.openModal(<LoginForm prefilledEmail="bob@test.com" prefilledPassword="Pa$$w0rd" />)} size='huge' inverted>
+                            For test login as bob!
+                        </Button>
                     </>
                 )}
+                <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                    <a href="https://github.com/navidasadipur/Reactivites" target="_blank" rel="noopener noreferrer" style={{ color: 'white' }}>
+                        View the source code on GitHub!
+                    </a>
+                </div>
             </Container>
         </Segment>
     )
