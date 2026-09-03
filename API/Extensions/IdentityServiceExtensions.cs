@@ -20,7 +20,15 @@ namespace API.Extensions
             })
             .AddEntityFrameworkStores<DataContext>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+            var tokenKey = config["TokenKey"];
+            if (string.IsNullOrWhiteSpace(tokenKey) || Encoding.UTF8.GetByteCount(tokenKey) < 64)
+            {
+                throw new InvalidOperationException(
+                    "TokenKey is missing or shorter than 64 bytes. HmacSha512 requires at least 64 bytes. " +
+                    "Set it through the TokenKey environment variable in production.");
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt => 

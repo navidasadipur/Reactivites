@@ -477,3 +477,12 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# local SQLite database
+API/*.db
+API/*.db-shm
+API/*.db-wal
+
+# API/appsettings.json holds non-secret defaults only and must ship to the image.
+# All secrets (TokenKey, Cloudinary) come from environment variables.
+!API/appsettings.json
