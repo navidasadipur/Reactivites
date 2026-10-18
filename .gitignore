@@ -486,3 +486,11 @@ API/*.db-wal
 # API/appsettings.json holds non-secret defaults only and must ship to the image.
 # All secrets (TokenKey, Cloudinary) come from environment variables.
 !API/appsettings.json
+
+# Deployment secrets and generated rehearsal/release artifacts.
+deploy/.env
+deploy/.env.*
+!deploy/.env.example
+deploy/local/
+deploy/releases/
+deploy/backups/

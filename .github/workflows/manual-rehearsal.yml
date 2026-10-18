@@ -1,0 +1,53 @@
+name: Manual deployment rehearsal
+
+# Only an explicit push to this dedicated rehearsal branch starts a build.
+# No main/PR trigger, schedule, production secret, registry push or server deploy.
+on:
+  push:
+    branches: [codex/manual-deployment-rehearsal]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-deployment-rehearsal
+  cancel-in-progress: false
+
+jobs:
+  rehearse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Set unique rehearsal image
+        run: echo "REHEARSAL_IMAGE=reactivities:rehearsal-${GITHUB_SHA:0:7}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_ENV"
+      - name: Build linux/amd64 image
+        run: docker buildx build --platform linux/amd64 --load --tag "$REHEARSAL_IMAGE" .
+      - name: Rehearse API, volume persistence and backup restoration
+        run: python3 deploy/rehearse_on_runner.py
+      - name: Export tested image and checksum
+        run: |
+          docker image save "$REHEARSAL_IMAGE" | gzip > deploy/releases/reactivities-image.tar.gz
+          cd deploy/releases
+          sha256sum reactivities-image.tar.gz > SHA256SUMS
+      - name: Upload rehearsal report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: rehearsal-report-${{ github.run_id }}-${{ github.run_attempt }}
+          path: deploy/releases/rehearsal-report.json
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Upload tested image
+        uses: actions/upload-artifact@v7
+        with:
+          name: reactivities-image-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            deploy/releases/reactivities-image.tar.gz
+            deploy/releases/SHA256SUMS
+          compression-level: 0
+          retention-days: 7
+          if-no-files-found: error

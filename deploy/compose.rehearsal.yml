@@ -1,0 +1,14 @@
+# Always combine with compose.yml. Bind locally; use separate resources from production.
+services:
+  app:
+    container_name: reactivities-rehearsal
+    ports:
+      - "127.0.0.1:18080:8080"
+
+networks:
+  default:
+    name: reactivities-rehearsal-net
+
+volumes:
+  data:
+    name: reactivities-rehearsal-data
