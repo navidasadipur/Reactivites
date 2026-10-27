@@ -1,6 +1,6 @@
 # ---------- Stage 1: build the React client ----------
 # Preserve the existing toolchain for this rehearsal. Runtime upgrades are tracked
-# in deploy/PLAN.md and are required before public production use.
+# in deploy/README.md and are required before public production use.
 FROM node:20-alpine AS client-build
 WORKDIR /src/client-app
 
