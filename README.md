@@ -1,5 +1,8 @@
 Reactivities
 
+Development uses `develop`; releases are reviewed through pull requests into `main`.
+See [the deployment baseline](deploy/README.md) for CI checks, configuration and current limitations.
+
 View a demo of this app here:
 <a href="https://Reactivites.navidasadipur.ir">https://Reactivites.navidasadipur.ir</a>
 

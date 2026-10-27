@@ -1,0 +1,31 @@
+name: reactivities
+
+services:
+  app:
+    image: ${REACTIVITIES_IMAGE:?Set REACTIVITIES_IMAGE}:${REACTIVITIES_TAG:?Set REACTIVITIES_TAG}
+    container_name: reactivities-app
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: Data Source=/app/data/reactivities.db
+      TokenKey: ${REACTIVITIES_TOKEN_KEY:?Set a unique key of at least 64 UTF-8 bytes}
+      Cloudinary__CloudName: ${CLOUDINARY_CLOUD_NAME:-}
+      Cloudinary__ApiKey: ${CLOUDINARY_API_KEY:-}
+      Cloudinary__ApiSecret: ${CLOUDINARY_API_SECRET:-}
+    volumes:
+      - data:/app/data
+    # Caddy reaches this container through reactivities-net; no host port.
+    logging:
+      driver: local
+      options:
+        max-size: 10m
+        max-file: "3"
+
+networks:
+  default:
+    name: reactivities-net
+
+volumes:
+  data:
+    name: reactivities-data

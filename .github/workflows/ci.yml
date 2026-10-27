@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# This baseline only validates code. Registry publication and deployment follow later.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-rehearse:
+    name: Build and rehearse
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Set disposable image name
+        run: echo "REHEARSAL_IMAGE=reactivities:ci-${GITHUB_SHA:0:7}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_ENV"
+      - name: Build linux/amd64 image
+        run: docker buildx build --platform linux/amd64 --load --tag "$REHEARSAL_IMAGE" .
+      - name: Rehearse API, volume persistence and backup restoration
+        run: python3 deploy/rehearse_on_runner.py
+      - name: Upload rehearsal report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: rehearsal-report-${{ github.run_id }}-${{ github.run_attempt }}
+          path: deploy/releases/rehearsal-report.json
+          if-no-files-found: warn
+          retention-days: 7
